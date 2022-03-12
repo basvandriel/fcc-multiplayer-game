@@ -2,15 +2,18 @@ require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const expect = require("chai");
-const socket = require("socket.io");
 const cors = require("cors");
 
 const fccTestingRoutes = require("./routes/fcctesting.js");
 const runner = require("./test-runner.js");
 const nocache = require("nocache");
 const helmet = require("helmet");
+const socket = require("socket.io");
 
 const app = express();
+
+// Create a basic HTTP server for using a socket
+// const httpServer = http.createServer(app);
 
 // Prevent the client from trying to guess / sniff the MIME type.
 app.use(helmet.noSniff());
@@ -21,6 +24,7 @@ app.use(nocache());
 // The headers say that the site is powered by "PHP 7.4.3" even though it isn't (as a security measure).
 app.use((req, res, next) => {
   res.setHeader("X-Powered-By", "PHP 7.4.3");
+
   next();
 });
 
@@ -62,6 +66,26 @@ const server = app.listen(portNum, () => {
       }
     }, 1500);
   }
+});
+
+const io = socket(server);
+
+/**
+ * The active players
+ */
+const players = [];
+
+// Handle connection
+io.on("connection", function (socket) {
+  players.push(undefined);
+  console.log("Connected succesfully to the socket ...");
+
+  socket.on("disconnect", () => {
+    players.pop();
+    console.log("user disconnected");
+  });
+
+  console.log(players.length);
 });
 
 module.exports = app; // For testing
