@@ -1,14 +1,21 @@
+import Player from "./Player.mjs";
+
 /**
  * The amount of padding on the side of the game
  *
  * Gets split across both x and y sides; so divise this by 2
  */
-const PADDING = 20;
+export const PADDING = 20;
 
 /**
  * The upper gap for the title
  */
-const UPPER_GAP = PADDING * 2;
+export const UPPER_GAP = PADDING * 2;
+
+/**
+ * The player img size
+ */
+export const PLAYER_SIZE = 30;
 
 class Drawer {
   /**
@@ -92,6 +99,20 @@ class Drawer {
       width - oneSidePadding,
       verticalCenterY
     );
+  }
+
+  /**
+   *
+   * @param {Player} player
+   */
+  drawPlayer(player) {
+    const { avatar, x, y } = player;
+
+    const img = new Image();
+    img.src = avatar;
+
+    console.log("Drawing player " + player.id);
+    this.context.drawImage(img, x, y, PLAYER_SIZE, PLAYER_SIZE);
   }
 }
 export default Drawer;

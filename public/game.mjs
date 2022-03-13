@@ -1,7 +1,7 @@
 import Player from "./Player.mjs";
 import Collectible from "./Collectible.mjs";
 
-import Drawer from "./drawer.mjs";
+import Drawer, { UPPER_GAP, PADDING, PLAYER_SIZE } from "./drawer.mjs";
 
 // Can call it like this because same domain
 const socket = io();
@@ -18,6 +18,46 @@ const FPS = 30;
 const context = canvas.getContext("2d");
 
 /**
+ * @type {Player} The current player
+ */
+let player = null;
+
+/**
+ * @type {Collectible} The current collectible
+ */
+let collectible = null;
+
+const getPlayFieldSize = () => ({
+  width: canvas.width - PADDING,
+  height: canvas.height - PADDING - UPPER_GAP,
+});
+
+function getStartCoordinates() {
+  const { width, height } = getPlayFieldSize();
+
+  const oneSidePadding = PADDING / 2;
+
+  const centerX = width / 2 - PLAYER_SIZE / 2;
+  const x = oneSidePadding + centerX * Math.random();
+
+  const centerY = height / 2 - PLAYER_SIZE / 2;
+  const y = oneSidePadding + UPPER_GAP + centerY * Math.random();
+
+  return { x, y };
+}
+
+socket.on("connect", () => {
+  // Start location is generated from the center of the game board
+  const { x, y } = getStartCoordinates();
+
+  const score = 0;
+  const id = socket.id;
+
+  player = new Player({ x, y, score, id });
+  socket.emit("join", player);
+});
+
+/**
  * Renders the game on the canvas
  */
 function render() {
@@ -26,6 +66,9 @@ function render() {
   drawer.drawBackground();
   drawer.drawGameField();
   drawer.drawHeader();
+
+  // If the player connected, start drawing
+  if (player) drawer.drawPlayer(player);
 
   return setTimeout(() => requestAnimationFrame(render), 1000 / FPS);
 }

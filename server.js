@@ -78,18 +78,11 @@ const players = [];
 
 // Handle connection
 io.on("connection", function (socket) {
-  const id = socket.id;
-  const score = 0;
-  const player = new Player({
-    x: 0,
-    y: 0,
-    score,
-    id,
+  socket.on("join", (player) => {
+    players.push(player);
+    console.log(`Player (${player.id}) joined the game`);
   });
-
-  players.push(player);
-
-  console.log(`Connected player (${player.id}) succesfully to the socket ...`);
+  // players.push(player);
 
   socket.on("disconnect", () => {
     players.pop();
