@@ -78,15 +78,17 @@ const players = [];
 
 // Handle connection
 io.on("connection", function (socket) {
-  socket.on("join", (player) => {
-    players.push(player);
-    console.log(`Player (${player.id}) joined the game`);
+  socket.on("join", (player) => players.push(player));
+
+  socket.on("update", (player) => {
+    const idx = players.findIndex((o) => o.id == player.id);
+    if (idx < 0) return;
+    players[idx] = player;
   });
   // players.push(player);
 
   socket.on("disconnect", () => {
     players.pop();
-    console.log("user disconnected");
   });
 
   console.log(players.length);

@@ -10,7 +10,7 @@ const canvas = document.getElementById("game-window");
 /**
  * Default frames per second for the game
  */
-const FPS = 30;
+const FPS = 60;
 
 /**
  *  @type {CanvasRenderingContext2D}
@@ -76,6 +76,7 @@ document.addEventListener("keydown", ({ key }) => {
     default:
     // do nothing
   }
+  socket.emit("update", player);
 });
 
 /**

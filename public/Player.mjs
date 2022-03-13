@@ -35,6 +35,14 @@ class Player {
     }
   }
 
+  get x() {
+    return this.#x;
+  }
+
+  get y() {
+    return this.#y;
+  }
+
   collision(item) {}
 
   calculateRank(arr) {}
