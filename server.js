@@ -9,6 +9,8 @@ const runner = require("./test-runner.js");
 const nocache = require("nocache");
 const helmet = require("helmet");
 const socket = require("socket.io");
+const { default: Player } = require("./public/Player.mjs");
+const { nanoid } = require("nanoid");
 
 const app = express();
 
@@ -77,8 +79,18 @@ const players = [];
 
 // Handle connection
 io.on("connection", function (socket) {
-  players.push(undefined);
-  console.log("Connected succesfully to the socket ...");
+  const id = nanoid(10);
+  const score = 0;
+  const player = new Player({
+    x: 0,
+    y: 0,
+    score,
+    id,
+  });
+
+  players.push(player);
+
+  console.log(`Connected player (${player.id}) succesfully to the socket ...`);
 
   socket.on("disconnect", () => {
     players.pop();
