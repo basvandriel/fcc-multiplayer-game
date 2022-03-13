@@ -1,8 +1,12 @@
+import { nanoid } from "nanoid";
+
 class Collectible {
-  constructor({x, y, value, id}) {
-
+  constructor({ x, y, value, id }) {
+    self.id = id;
+    self.value = value;
+    self.x = x;
+    self.y = y;
   }
-
 }
 
 /*
@@ -11,6 +15,6 @@ class Collectible {
 */
 try {
   module.exports = Collectible;
-} catch(e) {}
+} catch (e) {}
 
 export default Collectible;
