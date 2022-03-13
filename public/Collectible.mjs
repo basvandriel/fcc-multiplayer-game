@@ -1,5 +1,3 @@
-import { nanoid } from "nanoid";
-
 class Collectible {
   constructor({ x, y, value, id }) {
     self.id = id;
