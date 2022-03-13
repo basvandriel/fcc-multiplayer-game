@@ -3,9 +3,13 @@ import Collectible from "./Collectible.mjs";
 
 import Drawer, { UPPER_GAP, PADDING, PLAYER_SIZE } from "./drawer.mjs";
 
+import settings from "./settings.mjs";
+
 // Can call it like this because same domain
 const socket = io();
 const canvas = document.getElementById("game-window");
+canvas.width = settings.width;
+canvas.height = settings.height;
 
 /**
  * Default frames per second for the game
@@ -16,6 +20,11 @@ const FPS = 60;
  *  @type {CanvasRenderingContext2D}
  */
 const context = canvas.getContext("2d");
+
+export const SIZE = {
+  width: canvas.width - PADDING,
+  height: canvas.height - PADDING - UPPER_GAP,
+};
 
 /**
  * @type {Player} The current player

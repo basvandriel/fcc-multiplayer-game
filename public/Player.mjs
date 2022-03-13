@@ -1,3 +1,6 @@
+import { PADDING, UPPER_GAP } from "./drawer.mjs";
+import settings from "./settings.mjs";
+
 class Player {
   id;
   score;
@@ -19,11 +22,28 @@ class Player {
    * @param {number} speed
    */
   move(dir, speed) {
+    const gameWidth = settings.width - PADDING;
+    const gameHeight = settings.height - PADDING - UPPER_GAP;
+
+    const actualY = this.y - PADDING / 2 - UPPER_GAP;
+    console.log(actualY);
     switch (dir) {
       case "up":
+        const afterY = actualY - speed;
+        if (afterY < 0) return;
         this.#y -= speed;
+
         break;
       case "down":
+        // const after = actualY
+
+        // const after = actualY - PADDING / 2 - UPPER_GAP + speed;
+
+        // console.log(after);
+        // const afterY2 = this.#y + speed - (PADDING / 2 - UPPER_GAP);
+
+        // console.log(afterY2);
+
         this.#y += speed;
         break;
       case "right":

@@ -1,5 +1,7 @@
 import Player from "./Player.mjs";
 
+import settings from "./settings.mjs";
+
 /**
  * The amount of padding on the side of the game
  *
@@ -42,7 +44,7 @@ class Drawer {
    * No need to use begin path when only drawing one thing
    */
   drawBackground() {
-    const { width, height } = this.canvas;
+    const { width, height } = settings;
 
     this.context.fillStyle = "#8DC796";
     this.context.fillRect(0, 0, width, height);
@@ -55,7 +57,7 @@ class Drawer {
    * @param {*} height
    */
   drawGameField() {
-    const { width, height } = this.canvas;
+    const { width, height } = settings;
 
     this.context.lineWidth = 2;
 
@@ -71,7 +73,7 @@ class Drawer {
   }
 
   drawHeader() {
-    const { width } = this.canvas;
+    const { width, height } = settings;
 
     // Calculate the vertical center position for the padding + the upper gap
     // to vertically center the text in
