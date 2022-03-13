@@ -57,6 +57,27 @@ socket.on("connect", () => {
   socket.emit("join", player);
 });
 
+document.addEventListener("keydown", ({ key }) => {
+  const speed = 10;
+
+  switch (key) {
+    case "w":
+      player.move("up", speed);
+      break;
+    case "s":
+      player.move("down", speed);
+      break;
+    case "a":
+      player.move("left", speed);
+      break;
+    case "d":
+      player.move("right", speed);
+      break;
+    default:
+    // do nothing
+  }
+});
+
 /**
  * Renders the game on the canvas
  */
@@ -68,7 +89,9 @@ function render() {
   drawer.drawHeader();
 
   // If the player connected, start drawing
-  if (player) drawer.drawPlayer(player);
+  if (player) {
+    drawer.drawPlayer(player);
+  }
 
   return setTimeout(() => requestAnimationFrame(render), 1000 / FPS);
 }

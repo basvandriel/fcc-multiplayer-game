@@ -1,19 +1,39 @@
 class Player {
   id;
   score;
-  y;
-  x;
+  #y;
+  #x;
 
   #avatar = "https://avatars.githubusercontent.com/u/5286260?v=4";
 
   constructor({ x, y, score, id }) {
     this.id = id;
     this.score = score;
-    this.y = y;
-    this.x = x;
+    this.#y = y;
+    this.#x = x;
   }
 
-  movePlayer(dir, speed) {}
+  /**
+   *
+   * @param {"up" | "down" | "right" | "left"} dir
+   * @param {number} speed
+   */
+  move(dir, speed) {
+    switch (dir) {
+      case "up":
+        this.#y -= speed;
+        break;
+      case "down":
+        this.#y += speed;
+        break;
+      case "right":
+        this.#x += speed;
+        break;
+      case "left":
+        this.#x -= speed;
+        break;
+    }
+  }
 
   collision(item) {}
 

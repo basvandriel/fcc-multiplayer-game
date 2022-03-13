@@ -106,7 +106,7 @@ class Drawer {
    * @param {Player} player
    */
   drawPlayer(player) {
-    const { avatar, x, y } = player;
+    const { avatar, #x: x, #y: y } = player;
 
     const img = new Image();
     img.src = avatar;
