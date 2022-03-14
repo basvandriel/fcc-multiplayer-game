@@ -1,8 +1,9 @@
 import Player from "./Player.mjs";
 import Collectible from "./Collectible.mjs";
 
-import Drawer, { UPPER_GAP, PADDING, PLAYER_SIZE } from "./drawer.mjs";
+import Drawer from "./drawer.mjs";
 
+import calculateRandomPosition from "./calculateRandomPosition.mjs";
 import settings from "./settings.mjs";
 
 // Can call it like this because same domain
@@ -33,35 +34,22 @@ let player = null;
  */
 let collectible = null;
 
-const getPlayFieldSize = () => ({
-  width: canvas.width - PADDING,
-  height: canvas.height - PADDING - UPPER_GAP,
-});
-
-function getStartCoordinates() {
-  const { width, height } = getPlayFieldSize();
-
-  const oneSidePadding = PADDING / 2;
-  const random = Math.random() * 2;
-
-  const centerX = width / 2 - PLAYER_SIZE / 2;
-  const x = oneSidePadding + centerX * random;
-
-  const centerY = height / 2 - PLAYER_SIZE / 2;
-  const y = oneSidePadding + UPPER_GAP + centerY * random;
-
-  return { x, y };
-}
-
 socket.on("connect", () => {
   // Start location is generated from the center of the game board
-  const { x, y } = getStartCoordinates();
+  const { x, y } = calculateRandomPosition();
 
   const score = 0;
   const id = socket.id;
 
   player = new Player({ x, y, score, id });
   socket.emit("join", player);
+});
+
+socket.on("collectible", (collectable) => {
+  if (collectible) {
+    return;
+  }
+  collectible = collectable;
 });
 
 document.addEventListener("keydown", ({ key }) => {
@@ -96,6 +84,15 @@ function render() {
   drawer.drawBackground();
   drawer.drawGameField();
   drawer.drawHeader();
+
+  if (collectible) {
+    const { x, y } = collectible;
+    const { size } = settings.collectible;
+
+    context.fillStyle = "black";
+    context.rect(x, y, size, size);
+    context.fill();
+  }
 
   // If the player connected, start drawing
   if (player) {

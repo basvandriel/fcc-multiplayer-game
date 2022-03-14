@@ -1,9 +1,14 @@
+/**
+ * The default size of a collectible
+ */
+export const DEFAULT_SIZE = 10;
+
 class Collectible {
   constructor({ x, y, value, id }) {
-    self.id = id;
-    self.value = value;
-    self.x = x;
-    self.y = y;
+    this.id = id;
+    this.value = value;
+    this.x = x;
+    this.y = y;
   }
 }
 

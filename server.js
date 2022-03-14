@@ -10,6 +10,11 @@ const nocache = require("nocache");
 const helmet = require("helmet");
 const socket = require("socket.io");
 const { default: Player } = require("./public/Player.mjs");
+const Collectible = require("./public/Collectible.mjs");
+const { nanoid } = require("nanoid");
+const {
+  default: calculateRandomPosition,
+} = require("./public/calculateRandomPosition.mjs");
 
 const app = express();
 
@@ -78,7 +83,20 @@ const players = [];
 
 // Handle connection
 io.on("connection", function (socket) {
-  socket.on("join", (player) => players.push(player));
+  socket.on("join", (player) => {
+    players.push(player);
+
+    // Generate a random position for the collectible
+    const { x, y } = calculateRandomPosition();
+
+    const collectible = new Collectible({
+      x,
+      y,
+      value: "idk",
+      id: nanoid(5),
+    });
+    socket.emit("collectible", collectible);
+  });
 
   socket.on("update", (player) => {
     const idx = players.findIndex((o) => o.id == player.id);
