@@ -1,3 +1,4 @@
+import Collectible from "./Collectible.mjs";
 import { PADDING, UPPER_GAP } from "./drawer.mjs";
 import settings from "./settings.mjs";
 
@@ -45,7 +46,6 @@ class Player {
         if (this.#x + speed > maxX) {
           return;
         }
-
         this.#x += speed;
         break;
       case "left":
@@ -65,7 +65,15 @@ class Player {
     return this.#y;
   }
 
-  collision(item) {}
+  /**
+   *
+   * @param {Collectible} item
+   *
+   * @returns {bool} boolean
+   */
+  collision(item) {
+    return false;
+  }
 
   calculateRank(arr) {}
 

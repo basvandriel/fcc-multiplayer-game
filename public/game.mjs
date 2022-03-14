@@ -57,15 +57,19 @@ document.addEventListener("keydown", ({ key }) => {
 
   switch (key) {
     case "w":
+    case "W":
       player.move("up", speed);
       break;
     case "s":
+    case "S":
       player.move("down", speed);
       break;
     case "a":
+    case "A":
       player.move("left", speed);
       break;
     case "d":
+    case "D":
       player.move("right", speed);
       break;
     default:
@@ -92,6 +96,12 @@ function render() {
     context.fillStyle = "black";
     context.rect(x, y, size, size);
     context.fill();
+
+    if (player && player.collision(collectible)) {
+      collectible = null;
+
+      console.log("handle collision");
+    }
   }
 
   // If the player connected, start drawing
