@@ -43,8 +43,6 @@ class Player {
         break;
       case "right":
         if (this.#x + speed > maxX) {
-          console.log("nee");
-
           return;
         }
 
@@ -57,8 +55,6 @@ class Player {
         this.#x -= speed;
         break;
     }
-
-    console.log(this.y);
   }
 
   get x() {

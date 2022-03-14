@@ -8,6 +8,8 @@ import settings from "./settings.mjs";
 // Can call it like this because same domain
 const socket = io();
 const canvas = document.getElementById("game-window");
+
+// Set the size based on the settings
 canvas.width = settings.width;
 canvas.height = settings.height;
 
@@ -20,11 +22,6 @@ const FPS = 60;
  *  @type {CanvasRenderingContext2D}
  */
 const context = canvas.getContext("2d");
-
-export const SIZE = {
-  width: canvas.width - PADDING,
-  height: canvas.height - PADDING - UPPER_GAP,
-};
 
 /**
  * @type {Player} The current player
@@ -45,12 +42,13 @@ function getStartCoordinates() {
   const { width, height } = getPlayFieldSize();
 
   const oneSidePadding = PADDING / 2;
+  const random = Math.random() * 2;
 
   const centerX = width / 2 - PLAYER_SIZE / 2;
-  const x = oneSidePadding + centerX * Math.random();
+  const x = oneSidePadding + centerX * random;
 
   const centerY = height / 2 - PLAYER_SIZE / 2;
-  const y = oneSidePadding + UPPER_GAP + centerY * Math.random();
+  const y = oneSidePadding + UPPER_GAP + centerY * random;
 
   return { x, y };
 }
@@ -92,6 +90,7 @@ document.addEventListener("keydown", ({ key }) => {
  * Renders the game on the canvas
  */
 function render() {
+  context.clearRect(0, 0, settings.width, settings.height);
   const drawer = new Drawer(context, canvas);
 
   drawer.drawBackground();
