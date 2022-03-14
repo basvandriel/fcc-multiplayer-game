@@ -22,37 +22,43 @@ class Player {
    * @param {number} speed
    */
   move(dir, speed) {
-    const gameWidth = settings.width - PADDING;
-    const gameHeight = settings.height - PADDING - UPPER_GAP;
+    const minY = PADDING / 2 + UPPER_GAP;
+    const maxY = settings.height - UPPER_GAP;
 
-    const actualY = this.y - PADDING / 2 - UPPER_GAP;
-    console.log(actualY);
+    const minX = PADDING / 2;
+    const maxX = settings.width - PADDING * 2;
+
     switch (dir) {
       case "up":
-        const afterY = actualY - speed;
-        if (afterY < 0) return;
+        if (this.y - speed < minY) {
+          return;
+        }
         this.#y -= speed;
-
         break;
       case "down":
-        // const after = actualY
-
-        // const after = actualY - PADDING / 2 - UPPER_GAP + speed;
-
-        // console.log(after);
-        // const afterY2 = this.#y + speed - (PADDING / 2 - UPPER_GAP);
-
-        // console.log(afterY2);
-
+        if (this.y + speed > maxY) {
+          return;
+        }
         this.#y += speed;
         break;
       case "right":
+        if (this.#x + speed > maxX) {
+          console.log("nee");
+
+          return;
+        }
+
         this.#x += speed;
         break;
       case "left":
+        if (this.#x - speed < minX) {
+          return;
+        }
         this.#x -= speed;
         break;
     }
+
+    console.log(this.y);
   }
 
   get x() {

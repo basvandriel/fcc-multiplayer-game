@@ -67,7 +67,7 @@ socket.on("connect", () => {
 });
 
 document.addEventListener("keydown", ({ key }) => {
-  const speed = 10;
+  const speed = 5;
 
   switch (key) {
     case "w":
