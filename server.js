@@ -14,7 +14,7 @@ const Collectible = require("./public/Collectible.mjs");
 const { nanoid } = require("nanoid");
 const {
   default: calculateRandomPosition,
-} = require("./public/calculateRandomPosition.mjs");
+} = require("./public/lib/calculateRandomPosition.mjs");
 
 const app = express();
 
