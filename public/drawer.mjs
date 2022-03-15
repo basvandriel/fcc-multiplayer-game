@@ -115,5 +115,20 @@ class Drawer {
 
     this.context.drawImage(img, x, y, PLAYER_SIZE, PLAYER_SIZE);
   }
+
+  /**
+   *
+   * @param {Collectible} collectible
+   */
+  drawCollectible(collectible) {
+    const { x, y } = collectible;
+    const { size } = settings.collectible;
+
+    this.context.beginPath();
+    this.context.fillStyle = "black";
+    this.context.rect(x, y, size, size);
+    this.context.fill();
+    this.context.closePath();
+  }
 }
 export default Drawer;

@@ -8,6 +8,7 @@ code {
 
 canvas {
   margin: auto;
+  image-rendering: pixelated;
 }
 
 .container {

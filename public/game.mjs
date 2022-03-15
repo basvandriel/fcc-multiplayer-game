@@ -25,14 +25,14 @@ const FPS = 60;
 const context = canvas.getContext("2d");
 
 /**
- * @type {Player} The current player
+ * @type {Player | undefined} The current player
  */
-let player = null;
+let player;
 
 /**
- * @type {Collectible} The current collectible
+ * @type {Collectible | undefined} The current collectible
  */
-let collectible = null;
+let collectible;
 
 socket.on("connect", () => {
   // Start location is generated from the center of the game board
@@ -45,11 +45,19 @@ socket.on("connect", () => {
   socket.emit("join", player);
 });
 
-socket.on("collectible", (collectable) => {
-  if (collectible) {
-    return;
-  }
-  collectible = collectable;
+/**
+ * Add or update the collible object
+ */
+socket.on("collectible", (collectable) => (collectible = collectable));
+
+/**
+ * The player scores
+ */
+socket.on("score", (value) => {
+  player.score += value;
+
+  console.log(`You scored! Current score is now ${player.score}`);
+  socket.emit("update", player);
 });
 
 document.addEventListener("keydown", ({ key }) => {
@@ -90,23 +98,16 @@ function render() {
   drawer.drawHeader();
 
   if (collectible) {
-    const { x, y } = collectible;
-    const { size } = settings.collectible;
-
-    context.fillStyle = "black";
-    context.rect(x, y, size, size);
-    context.fill();
-
-    if (player && player.collision(collectible)) {
-      collectible = null;
-
-      console.log("handle collision");
-    }
+    drawer.drawCollectible(collectible);
   }
 
   // If the player connected, start drawing
   if (player) {
     drawer.drawPlayer(player);
+  }
+
+  if (player && collectible && player.collision(collectible)) {
+    socket.emit("playerCollideWithCollectible", player, collectible);
   }
 
   return setTimeout(() => requestAnimationFrame(render), 1000 / FPS);

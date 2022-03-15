@@ -92,7 +92,7 @@ io.on("connection", function (socket) {
     const collectible = new Collectible({
       x,
       y,
-      value: "idk",
+      value: 10,
       id: nanoid(5),
     });
     socket.emit("collectible", collectible);
@@ -103,13 +103,28 @@ io.on("connection", function (socket) {
     if (idx < 0) return;
     players[idx] = player;
   });
-  // players.push(player);
+
+  // socket.on("playerCollideWithCollectible", (player) => {});
+  socket.on("playerCollideWithCollectible", (player, collectible) => {
+    socket.emit("score", collectible.value);
+
+    // Generate a random position for the collectible
+    const { x, y } = calculateRandomPosition();
+
+    const newCollectible = new Collectible({
+      x,
+      y,
+      value: 10,
+      id: nanoid(5),
+    });
+    // Generate new position for the collectible item
+    // let newCollectiblePos = generateStartPos(playField, collectibleSprite);
+    socket.emit("collectible", newCollectible);
+  });
 
   socket.on("disconnect", () => {
     players.pop();
   });
-
-  console.log(players.length);
 });
 
 module.exports = app; // For testing
