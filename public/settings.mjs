@@ -1,4 +1,4 @@
-import { UPPER_GAP, PADDING } from "./drawer.mjs";
+import { UPPER_GAP, PADDING } from "./drawer/BoardDrawer.mjs";
 
 export default {
   height: 480,

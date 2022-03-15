@@ -1,6 +1,5 @@
-import Player from "./Player.mjs";
-
-import settings from "./settings.mjs";
+import Drawer from "./drawer.mjs";
+import settings from "../settings.mjs";
 
 /**
  * The amount of padding on the side of the game
@@ -14,36 +13,11 @@ export const PADDING = 20;
  */
 export const UPPER_GAP = PADDING * 2;
 
-/**
- * The player img size
- */
-export const PLAYER_SIZE = 30;
-
-class Drawer {
-  /**
-   * @type {CanvasRenderingContext2D}
-   */
-  context;
-
-  /**
-   * @type {HTMLElement}
-   */
-  canvas;
-
-  /**
-   *
-   * @param {CanvasRenderingContext2D} context
-   * @param {HTMLElement} canvas
-   */
-  constructor(context, canvas) {
-    this.context = context;
-    this.canvas = canvas;
-  }
-
+export default class BoardDrawer extends Drawer {
   /**
    * No need to use begin path when only drawing one thing
    */
-  drawBackground() {
+  #drawBackground() {
     const { width, height } = settings;
 
     this.context.fillStyle = "#8DC796";
@@ -53,10 +27,8 @@ class Drawer {
   /**
    * The drawing logic for the game itself
    *
-   * @param {*} width
-   * @param {*} height
    */
-  drawGameField() {
+  #drawGameField() {
     const { width, height } = settings;
 
     this.context.lineWidth = 2;
@@ -72,7 +44,7 @@ class Drawer {
     this.context.strokeRect(x, y, rectWidth, rectHeight - UPPER_GAP);
   }
 
-  drawHeader() {
+  #drawHeader() {
     const { width, height } = settings;
 
     // Calculate the vertical center position for the padding + the upper gap
@@ -103,32 +75,9 @@ class Drawer {
     );
   }
 
-  /**
-   *
-   * @param {Player} player
-   */
-  drawPlayer(player) {
-    const { avatar, x, y } = player;
-
-    const img = new Image();
-    img.src = avatar;
-
-    this.context.drawImage(img, x, y, PLAYER_SIZE, PLAYER_SIZE);
-  }
-
-  /**
-   *
-   * @param {Collectible} collectible
-   */
-  drawCollectible(collectible) {
-    const { x, y } = collectible;
-    const { size } = settings.collectible;
-
-    this.context.beginPath();
-    this.context.fillStyle = "black";
-    this.context.rect(x, y, size, size);
-    this.context.fill();
-    this.context.closePath();
+  draw() {
+    this.#drawBackground();
+    this.#drawGameField();
+    this.#drawHeader();
   }
 }
-export default Drawer;

@@ -1,5 +1,7 @@
-import { UPPER_GAP, PADDING, PLAYER_SIZE } from "./drawer.mjs";
-import settings from "./settings.mjs";
+import { UPPER_GAP, PADDING } from "../drawer/BoardDrawer.mjs";
+import { PLAYER_SIZE } from "../drawer/PlayerDrawer.mjs";
+
+import settings from "../settings.mjs";
 
 export default function calculateRandomPosition() {
   const { width, height } = settings.playFieldSize;

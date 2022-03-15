@@ -1,9 +1,11 @@
 import Player from "./Player.mjs";
 import Collectible from "./Collectible.mjs";
 
-import Drawer from "./drawer.mjs";
+import BoardDrawer from "./drawer/BoardDrawer.mjs";
+import PlayerDrawer from "./drawer/PlayerDrawer.mjs";
+import CollectibleDrawer from "./drawer/CollectibleDrawer.mjs";
 
-import calculateRandomPosition from "./calculateRandomPosition.mjs";
+import calculateRandomPosition from "./lib/calculateRandomPosition.mjs";
 import settings from "./settings.mjs";
 
 // Can call it like this because same domain
@@ -99,23 +101,22 @@ document.addEventListener("keydown", ({ key }) => {
  */
 function render() {
   context.clearRect(0, 0, settings.width, settings.height);
-  const drawer = new Drawer(context, canvas);
-
-  drawer.drawBackground();
-  drawer.drawGameField();
-  drawer.drawHeader();
+  new BoardDrawer(context).draw();
 
   if (collectible) {
-    drawer.drawCollectible(collectible);
+    const drawer = new CollectibleDrawer(context);
+    drawer.draw(collectible);
   }
 
   // If the player connected, start drawing
   if (player) {
-    drawer.drawPlayer(player);
+    // console.log("hallo");
+    const drawer = new PlayerDrawer(context);
+    drawer.draw(player);
   }
 
   for (const opponent in opponents) {
-    console.log("yeah rendering a new opponent");
+    // console.log("yeah rendering a new odpponent");
     // drawer.drawPlayer(opponent);
   }
 

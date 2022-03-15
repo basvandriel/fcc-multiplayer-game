@@ -1,7 +1,9 @@
-import { PADDING, PLAYER_SIZE as SIZE, UPPER_GAP } from "./drawer.mjs";
+import { PADDING, UPPER_GAP } from "./drawer/BoardDrawer.mjs";
+import { PLAYER_SIZE as SIZE } from "./drawer/PlayerDrawer.mjs";
+
 import settings from "./settings.mjs";
 
-import intersects from "./intersects.mjs";
+import intersects from "./lib/intersects.mjs";
 
 import Collectible, {
   DEFAULT_SIZE as COLLECTIBLE_SIZE,
