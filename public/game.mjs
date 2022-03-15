@@ -30,12 +30,16 @@ const context = canvas.getContext("2d");
 let player;
 
 /**
+ * @type {Player[]} The opponents of the player
+ */
+let opponents = [];
+
+/**
  * @type {Collectible | undefined} The current collectible
  */
 let collectible;
 
 socket.on("connect", () => {
-  // Start location is generated from the center of the game board
   const { x, y } = calculateRandomPosition();
 
   const score = 0;
@@ -58,6 +62,10 @@ socket.on("score", (value) => {
 
   console.log(`You scored! Current score is now ${player.score}`);
   socket.emit("update", player);
+});
+
+socket.on("opponent_join", (player) => {
+  opponents.push(player);
 });
 
 document.addEventListener("keydown", ({ key }) => {
@@ -104,6 +112,11 @@ function render() {
   // If the player connected, start drawing
   if (player) {
     drawer.drawPlayer(player);
+  }
+
+  for (const opponent in opponents) {
+    console.log("yeah rendering a new opponent");
+    // drawer.drawPlayer(opponent);
   }
 
   if (player && collectible && player.collision(collectible)) {

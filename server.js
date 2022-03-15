@@ -84,7 +84,12 @@ const players = [];
 // Handle connection
 io.on("connection", function (socket) {
   socket.on("join", (player) => {
+    const opponents = players;
     players.push(player);
+
+    for (const opp in opponents) {
+      socket.emit("opponent_join", opp);
+    }
 
     // Generate a random position for the collectible
     const { x, y } = calculateRandomPosition();
