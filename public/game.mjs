@@ -104,15 +104,15 @@ function render() {
   new BoardDrawer(context).draw();
 
   if (collectible) {
-    const drawer = new CollectibleDrawer(context);
-    drawer.draw(collectible);
+    const drawer = new CollectibleDrawer(context, collectible);
+    drawer.draw();
   }
 
   // If the player connected, start drawing
   if (player) {
     // console.log("hallo");
-    const drawer = new PlayerDrawer(context);
-    drawer.draw(player);
+    const drawer = new PlayerDrawer(context, player);
+    drawer.draw();
   }
 
   for (const opponent in opponents) {

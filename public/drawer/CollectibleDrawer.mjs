@@ -5,6 +5,20 @@ import settings from "../settings.mjs";
 
 export default class CollectibleDrawer extends Drawer {
   /**
+   * @type {Collectible}
+   */
+  collectible;
+
+  /**
+   *
+   * @param {CanvasRenderingContext2D} context
+   * @param {Collectible} collectible
+   */
+  constructor(context, collectible) {
+    super(context);
+    self.collectible = collectible;
+  }
+  /**
    *
    * @param {Collectible} collectible
    */

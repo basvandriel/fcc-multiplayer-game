@@ -8,12 +8,25 @@ export const PLAYER_SIZE = 30;
 
 export default class PlayerDrawer extends Drawer {
   /**
-   * Jah
+   * @type {Player}
+   */
+  player;
+
+  /**
    *
+   * @param {CanvasRenderingContext2D} context
    * @param {Player} player
    */
-  draw(player) {
-    const { avatar, x, y } = player;
+  constructor(context, player) {
+    super(context);
+    self.player = player;
+  }
+
+  /**
+   * Jah
+   */
+  draw() {
+    const { avatar, x, y } = this.player;
 
     const img = new Image();
     img.src = avatar;
