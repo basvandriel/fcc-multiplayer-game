@@ -1,6 +1,11 @@
-import Collectible from "./Collectible.mjs";
-import { PADDING, UPPER_GAP } from "./drawer.mjs";
+import { PADDING, PLAYER_SIZE as SIZE, UPPER_GAP } from "./drawer.mjs";
 import settings from "./settings.mjs";
+
+import intersects from "./intersects.mjs";
+
+import Collectible, {
+  DEFAULT_SIZE as COLLECTIBLE_SIZE,
+} from "./Collectible.mjs";
 
 class Player {
   id;
@@ -72,7 +77,19 @@ class Player {
    * @returns {bool} boolean
    */
   collision(item) {
-    return false;
+    const { x: x1, y: y1 } = this;
+    const { x: x2, y: y2 } = item;
+
+    return intersects(
+      x1,
+      y1,
+      SIZE,
+      SIZE,
+      x2,
+      y2,
+      COLLECTIBLE_SIZE,
+      COLLECTIBLE_SIZE
+    );
   }
 
   calculateRank(arr) {}
