@@ -16,13 +16,14 @@ export default class CollectibleDrawer extends Drawer {
    */
   constructor(context, collectible) {
     super(context);
+
     self.collectible = collectible;
   }
   /**
    *
    * @param {Collectible} collectible
    */
-  draw(collectible) {
+  draw() {
     const { x, y } = collectible;
     const { size } = settings.collectible;
 

@@ -76,6 +76,8 @@ export default class BoardDrawer extends Drawer {
   }
 
   draw() {
+    this.context.clearRect(0, 0, settings.width, settings.height);
+
     this.#drawBackground();
     this.#drawGameField();
     this.#drawHeader();

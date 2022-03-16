@@ -73,6 +73,13 @@ class Player {
   }
 
   /**
+   * Get's the avatar
+   */
+  get avatar() {
+    return this.#avatar;
+  }
+
+  /**
    *
    * @param {Collectible} item
    *
@@ -95,13 +102,6 @@ class Player {
   }
 
   calculateRank(arr) {}
-
-  /**
-   * Get's the avatar
-   */
-  get avatar() {
-    return this.#avatar;
-  }
 }
 
 export default Player;

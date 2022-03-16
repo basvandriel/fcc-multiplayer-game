@@ -100,7 +100,6 @@ document.addEventListener("keydown", ({ key }) => {
  * Renders the game on the canvas
  */
 function render() {
-  context.clearRect(0, 0, settings.width, settings.height);
   new BoardDrawer(context).draw();
 
   if (collectible) {
@@ -110,7 +109,6 @@ function render() {
 
   // If the player connected, start drawing
   if (player) {
-    // console.log("hallo");
     const drawer = new PlayerDrawer(context, player);
     drawer.draw();
   }
