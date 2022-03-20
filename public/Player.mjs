@@ -12,16 +12,16 @@ import Collectible, {
 class Player {
   id;
   score;
-  #y;
-  #x;
+  y;
+  x;
 
-  #avatar = "https://avatars.githubusercontent.com/u/5286260?v=4";
+  avatar = "https://avatars.githubusercontent.com/u/5286260?v=4";
 
   constructor({ x, y, score, id }) {
     this.id = id;
     this.score = score;
-    this.#y = y;
-    this.#x = x;
+    this.y = y;
+    this.x = x;
   }
 
   /**
@@ -41,43 +41,29 @@ class Player {
         if (this.y - speed < minY) {
           return;
         }
-        this.#y -= speed;
+        this.y -= speed;
         break;
       case "down":
         if (this.y + speed > maxY) {
           return;
         }
-        this.#y += speed;
+        this.y += speed;
         break;
       case "right":
-        if (this.#x + speed > maxX) {
+        if (this.x + speed > maxX) {
           return;
         }
-        this.#x += speed;
+        this.x += speed;
         break;
       case "left":
-        if (this.#x - speed < minX) {
+        if (this.x - speed < minX) {
           return;
         }
-        this.#x -= speed;
+        this.x -= speed;
         break;
     }
   }
 
-  get x() {
-    return this.#x;
-  }
-
-  get y() {
-    return this.#y;
-  }
-
-  /**
-   * Get's the avatar
-   */
-  get avatar() {
-    return this.#avatar;
-  }
 
   /**
    *

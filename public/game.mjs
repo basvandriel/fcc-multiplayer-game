@@ -2,7 +2,7 @@ import Player from "./Player.mjs";
 import Collectible from "./Collectible.mjs";
 
 import BoardDrawer from "./drawer/BoardDrawer.mjs";
-import PlayerDrawer from "./drawer/PlayerDrawer.mjs";
+import PlayerDrawer, { PLAYER_SIZE } from "./drawer/PlayerDrawer.mjs";
 import CollectibleDrawer from "./drawer/CollectibleDrawer.mjs";
 
 import calculateRandomPosition from "./lib/calculateRandomPosition.mjs";
@@ -20,6 +20,11 @@ canvas.height = settings.height;
  * Default frames per second for the game
  */
 const FPS = 60;
+
+/**
+ * 
+ */
+const OPP_AVATAR_URL = 'https://scontent-amt2-1.xx.fbcdn.net/v/t31.18172-8/21122342_1822234054453368_2189204337892011691_o.jpg?_nc_cat=109&ccb=1-5&_nc_sid=174925&_nc_ohc=ol8bz6D4rz8AX9i6kZ9&_nc_ht=scontent-amt2-1.xx&oh=00_AT_JK7GKfqRNY2lbnng-QBEXQLktoF931jE9T52KeDDHXg&oe=625C8483'
 
 /**
  *  @type {CanvasRenderingContext2D}
@@ -69,9 +74,38 @@ socket.on("score", (value) => {
 });
 
 socket.on("opponents_join", (players) => {
-  console.log(players)
-  players.forEach((v) => opponents.push(v))
+  players.forEach((opponent) => {
+    opponent.avatar = OPP_AVATAR_URL
+    opponents.push(opponent)
+  })  
 });
+
+socket.on("opponent_broadcast", (player) => {
+  player.avatar = OPP_AVATAR_URL
+  opponents.push(player)
+})
+
+/**
+ * A opponent has moved, or scored or whatever. Let's update.
+ */
+socket.on("opponent_update", ({ id, x, y, score }) => {
+  const index = opponents.findIndex(o => o.id == id)
+  if(index < 0) {
+    return
+  }
+
+  opponents[index].x = x
+  opponents[index].y = y
+  opponents[index].score = score
+})
+
+socket.on("opponent_leave", (player_id) => {
+  const index = opponents.findIndex(o => o.id == player_id)
+  if(index < 0) {
+      return
+  }
+  opponents.splice(index, 1)
+})
 
 document.addEventListener("keydown", ({ key }) => {
   const speed = 5;
@@ -116,10 +150,10 @@ function render() {
     drawer.draw();
   }
 
-  for (const opponent in opponents) {
-    // console.log("yeah rendering a new odpponent");
-    // drawer.drawPlayer(opponent);
-  }
+  opponents.forEach((opponent) => {
+    const drawer = new PlayerDrawer(context, opponent)
+    drawer.draw()
+  })
 
   if (player && collectible && player.collision(collectible)) {
     socket.emit("playerCollideWithCollectible", player, collectible);

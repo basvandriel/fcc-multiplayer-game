@@ -99,12 +99,18 @@ io.on("connection", function (socket) {
       id: nanoid(5),
     });
     socket.emit("collectible", collectible);
+
+
+    // Send the current player to everyone
+    socket.broadcast.emit("opponent_broadcast", player)
   });
 
   socket.on("update", (player) => {
     const idx = players.findIndex((o) => o.id == player.id);
     if (idx < 0) return;
     players[idx] = player;
+
+    socket.broadcast.emit('opponent_update', player)
   });
 
   // socket.on("playerCollideWithCollectible", (player) => {});
@@ -126,11 +132,13 @@ io.on("connection", function (socket) {
   });
 
   socket.on("disconnect", () => {
+    // use findindex
     var index = players.map(x => {
       return x.id;
     }).indexOf(socket.id);
-
     players.splice(index, 1)
+
+    socket.broadcast.emit("opponent_leave", socket.id)
   });
 });
 
