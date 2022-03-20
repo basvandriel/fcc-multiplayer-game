@@ -15,7 +15,7 @@ class Player {
   y;
   x;
 
-  avatar = "https://avatars.githubusercontent.com/u/5286260?v=4";
+  #avatar = "https://avatars.githubusercontent.com/u/5286260?v=4";
 
   constructor({ x, y, score, id }) {
     this.id = id;
@@ -62,6 +62,10 @@ class Player {
         this.x -= speed;
         break;
     }
+  }
+
+  get avatar() {
+    return this.#avatar
   }
 
 

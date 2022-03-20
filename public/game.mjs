@@ -54,8 +54,6 @@ socket.on("connect", () => {
 
   player = new Player({ x, y, score, id });
   socket.emit("join", player);
-
-  console.log(`my id is ${id}`)
 });
 
 /**
@@ -67,8 +65,7 @@ socket.on("collectible", (collectable) => (collectible = collectable));
  * The player scores
  */
 socket.on("score", (value) => {
-  player.score += value;
-
+  player.score += value;  
   console.log(`You scored! Current score is now ${player.score}`);
   socket.emit("update", player);
 });

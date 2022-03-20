@@ -81,23 +81,21 @@ const io = socket(server);
  */
 const players = [];
 
+/**
+ * The current collectible
+ */
+const collectible = new Collectible({
+  ...calculateRandomPosition(),
+  value: 10,
+  id: nanoid(5),
+});
+
 // Handle connection
 io.on("connection", function (socket) {
   socket.on("join", (player) => {
-    const opponents = players;
-    socket.emit("opponents_join", opponents)
-
+    socket.emit("opponents_join", players)
     players.push(player);
 
-    // Generate a random position for the collectible
-    const { x, y } = calculateRandomPosition();
-
-    const collectible = new Collectible({
-      x,
-      y,
-      value: 10,
-      id: nanoid(5),
-    });
     socket.emit("collectible", collectible);
 
 
@@ -126,8 +124,7 @@ io.on("connection", function (socket) {
       value: 10,
       id: nanoid(5),
     });
-    // Generate new position for the collectible item
-    // let newCollectiblePos = generateStartPos(playField, collectibleSprite);
+    
     socket.emit("collectible", newCollectible);
   });
 
