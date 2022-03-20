@@ -28,7 +28,6 @@ export default class PlayerDrawer extends Drawer {
   draw() {
     const { avatar, x, y } = this.player;
 
-    console.log("ja??");
     const img = new Image();
     img.src = avatar;
 

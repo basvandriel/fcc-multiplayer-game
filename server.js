@@ -85,11 +85,9 @@ const players = [];
 io.on("connection", function (socket) {
   socket.on("join", (player) => {
     const opponents = players;
-    players.push(player);
+    socket.emit("opponents_join", opponents)
 
-    for (const opp in opponents) {
-      socket.emit("opponent_join", opp);
-    }
+    players.push(player);
 
     // Generate a random position for the collectible
     const { x, y } = calculateRandomPosition();
@@ -128,7 +126,11 @@ io.on("connection", function (socket) {
   });
 
   socket.on("disconnect", () => {
-    players.pop();
+    var index = players.map(x => {
+      return x.id;
+    }).indexOf(socket.id);
+
+    players.splice(index, 1)
   });
 });
 

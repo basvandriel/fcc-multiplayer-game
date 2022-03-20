@@ -49,6 +49,8 @@ socket.on("connect", () => {
 
   player = new Player({ x, y, score, id });
   socket.emit("join", player);
+
+  console.log(`my id is ${id}`)
 });
 
 /**
@@ -66,8 +68,9 @@ socket.on("score", (value) => {
   socket.emit("update", player);
 });
 
-socket.on("opponent_join", (player) => {
-  opponents.push(player);
+socket.on("opponents_join", (players) => {
+  console.log(players)
+  players.forEach((v) => opponents.push(v))
 });
 
 document.addEventListener("keydown", ({ key }) => {
