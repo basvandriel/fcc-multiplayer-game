@@ -69,7 +69,6 @@ socket.on("collectible", (collectable) => {
 socket.on("score", (value) => {
   player.score += value;  
   console.log(`You scored! Current score is now ${player.score}`);
-  socket.emit("update", player);
 });
 
 socket.on("opponents_join", (players) => {

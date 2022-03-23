@@ -128,13 +128,11 @@ io.on("connection", function (socket) {
     socket.emit("score", collectible.value);
     socket.emit('update', player)
 
+    // Update the entire object
+    collectible = collectibleFactory.create()
     
-    const newCollectible = collectibleFactory.create()
-    
-    socket.emit("collectible", newCollectible);
-    
-    // Just update the object
-    collectible = newCollectible
+    socket.emit("collectible", collectible);
+    socket.broadcast.emit('collectible', collectible)
     
     socket.broadcast.emit('opponent_update', player)
   });
