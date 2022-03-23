@@ -141,7 +141,12 @@ document.addEventListener("keydown", ({ key }) => {
  * Renders the game on the canvas
  */
 function render() {
-  new BoardDrawer(context).draw();
+  // The calculated player rank
+  const rank = 0;
+
+  // To count the total players, count the opponents 
+  // plus the current player
+  new BoardDrawer(context, rank, opponents.length + 1).draw();
 
   if (collectible) {
     const drawer = new CollectibleDrawer(context, collectible);

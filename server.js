@@ -93,7 +93,7 @@ const players = [];
 /**
  * The current collectible
  */
-const collectible = collectibleFactory.create()
+const collectible = collectibleFactory.create() || undefined
 
 /**
  * Helper function to find the player index
@@ -105,12 +105,11 @@ const findPlayerIndex = (id) => players.findIndex((o) => o.id == id)
 
 // Handle connection
 io.on("connection", function (socket) {
+  socket.emit("opponents_join", players)
+  socket.emit("collectible", collectible);
+
   socket.on("join", (player) => {
-    socket.emit("opponents_join", players)
     players.push(player);
-
-    socket.emit("collectible", collectible);
-
 
     // Send the current player to everyone
     socket.broadcast.emit("opponent_broadcast", player)
