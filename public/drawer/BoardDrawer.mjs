@@ -27,12 +27,11 @@ export default class BoardDrawer extends Drawer {
   /**
    * 
    * @param {*} context 
-   * @param {number} playerAmount The length of the total players 
+   * @param {string} rank The rank string 
    */
-  constructor(context, rank, playerAmount) {
+  constructor(context, rank) {
     super(context)
     this.rank = rank;
-    this.playerAmount = playerAmount;
   }
   /**
    * The drawing logic for the game itself
@@ -78,11 +77,7 @@ export default class BoardDrawer extends Drawer {
     // Draw the rank
     this.context.textAlign = "end";
     this.context.font = "12px 'Press Start 2P'";
-    this.context.fillText(
-      `Rank: ${this.rank} / ${this.playerAmount}`,
-      width - oneSidePadding,
-      verticalCenterY
-    );
+    this.context.fillText(this.rank, width - oneSidePadding, verticalCenterY);
   }
 
   draw() {

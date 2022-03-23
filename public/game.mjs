@@ -37,6 +37,11 @@ const context = canvas.getContext("2d");
 let player;
 
 /**
+ * @type {string} The rank string
+ */
+let rank;
+
+/**
  * @type {Player[]} The opponents of the player
  */
 let opponents = [];
@@ -53,6 +58,8 @@ socket.on("connect", () => {
   const { x, y } = calculateRandomPosition();
 
   player = new Player({ x, y, score, id });
+  rank = player.calculateRank([player, ...opponents])
+  
   socket.emit("join", player);
 });
 
@@ -68,6 +75,8 @@ socket.on("collectible", (collectable) => {
  */
 socket.on("score", (value) => {
   player.score += value;  
+  rank = player.calculateRank([player, ...opponents])
+
   console.log(`You scored! Current score is now ${player.score}`);
 });
 
@@ -78,7 +87,9 @@ socket.on("opponents_join", (players) => {
   players.forEach((opponent) => {
     opponent.avatar = OPP_AVATAR_URL
     opponents.push(opponent)
-  })  
+  })
+
+  rank = player.calculateRank([player, ...opponents])
 });
 
 /**
@@ -104,6 +115,8 @@ socket.on("opponent_update", ({ id, x, y, score }) => {
   opponents[index].x = x
   opponents[index].y = y
   opponents[index].score = score
+
+  rank = player.calculateRank([player, opponents])
 })
 
 socket.on("opponent_leave", (player_id) => {
@@ -141,12 +154,9 @@ document.addEventListener("keydown", ({ key }) => {
  * Renders the game on the canvas
  */
 function render() {
-  // The calculated player rank
-  const rank = 0;
-
   // To count the total players, count the opponents 
   // plus the current player
-  new BoardDrawer(context, rank, opponents.length + 1).draw();
+  new BoardDrawer(context, rank).draw();
 
   if (collectible) {
     const drawer = new CollectibleDrawer(context, collectible);

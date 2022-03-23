@@ -91,7 +91,12 @@ class Player {
     );
   }
 
-  calculateRank(arr) {}
+  calculateRank(arr) {
+    const rank = 0;
+    const total = arr.length;
+
+    return `Rank: ${rank} / ${total}`
+  }
 }
 
 export default Player;
