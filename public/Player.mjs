@@ -91,9 +91,18 @@ class Player {
     );
   }
 
+  /**
+   * 
+   * @param {Player[]} arr
+   *  
+   * @returns string
+   */
   calculateRank(arr) {
-    const rank = 0;
-    const total = arr.length;
+    const sorted = arr.sort((left, right) => right.score - left.score)
+
+    // + 1 because array is 0-based
+    const rank = sorted.findIndex((p) => p.id == this.id) + 1
+    const total = sorted.length;
 
     return `Rank: ${rank} / ${total}`
   }
