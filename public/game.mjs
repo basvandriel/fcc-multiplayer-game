@@ -108,15 +108,12 @@ socket.on("opponent_broadcast", (player) => {
  */
 socket.on("opponent_update", ({ id, x, y, score }) => {
   const index = opponents.findIndex(o => o.id == id)
-  if(index < 0) {
-    return
-  }
 
   opponents[index].x = x
   opponents[index].y = y
   opponents[index].score = score
 
-  rank = player.calculateRank([player, opponents])
+  rank = player.calculateRank([player, ...opponents])
 })
 
 socket.on("opponent_leave", (player_id) => {
@@ -154,6 +151,8 @@ document.addEventListener("keydown", ({ key }) => {
  * Renders the game on the canvas
  */
 function render() {
+  if(!player) return requestAnimationFrame(render)
+  
   // To count the total players, count the opponents 
   // plus the current player
   new BoardDrawer(context, rank).draw();
