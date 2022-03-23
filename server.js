@@ -16,6 +16,10 @@ const {
   default: calculateRandomPosition,
 } = require("./public/lib/calculateRandomPosition.mjs");
 
+const {
+  default: CollectibleFactory
+}  = require('./public/collectible/CollectibleFactory.mjs')
+
 const app = express();
 
 // Create a basic HTTP server for using a socket
@@ -77,6 +81,11 @@ const server = app.listen(portNum, () => {
 const io = socket(server);
 
 /**
+ * 
+ */
+const collectibleFactory = new CollectibleFactory()
+
+/**
  * The active players
  */
 const players = [];
@@ -84,11 +93,15 @@ const players = [];
 /**
  * The current collectible
  */
-const collectible = new Collectible({
-  ...calculateRandomPosition(),
-  value: 10,
-  id: nanoid(5),
-});
+const collectible = collectibleFactory.create()
+
+/**
+ * Helper function to find the player index
+ * 
+ * @param {number} id 
+ * @returns 
+ */
+const findPlayerIndex = (id) => players.findIndex((o) => o.id == id)
 
 // Handle connection
 io.on("connection", function (socket) {
@@ -104,35 +117,30 @@ io.on("connection", function (socket) {
   });
 
   socket.on("update", (player) => {
-    const idx = players.findIndex((o) => o.id == player.id);
+    const idx = findPlayerIndex(player.id)
     if (idx < 0) return;
     players[idx] = player;
 
     socket.broadcast.emit('opponent_update', player)
   });
 
-  // socket.on("playerCollideWithCollectible", (player) => {});
   socket.on("playerCollideWithCollectible", (player, collectible) => {
     socket.emit("score", collectible.value);
+    socket.emit('update', player)
 
-    // Generate a random position for the collectible
-    const { x, y } = calculateRandomPosition();
-
-    const newCollectible = new Collectible({
-      x,
-      y,
-      value: 10,
-      id: nanoid(5),
-    });
+    
+    const newCollectible = collectibleFactory.create()
     
     socket.emit("collectible", newCollectible);
+    
+    // Just update the object
+    collectible = newCollectible
+    
+    socket.broadcast.emit('opponent_update', player)
   });
 
   socket.on("disconnect", () => {
-    // use findindex
-    var index = players.map(x => {
-      return x.id;
-    }).indexOf(socket.id);
+    const index = findPlayerIndex(socket.id)
     players.splice(index, 1)
 
     socket.broadcast.emit("opponent_leave", socket.id)

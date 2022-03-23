@@ -47,10 +47,10 @@ let opponents = [];
 let collectible;
 
 socket.on("connect", () => {
-  const { x, y } = calculateRandomPosition();
-
   const score = 0;
   const id = socket.id;
+
+  const { x, y } = calculateRandomPosition();
 
   player = new Player({ x, y, score, id });
   socket.emit("join", player);
@@ -59,7 +59,9 @@ socket.on("connect", () => {
 /**
  * Add or update the collible object
  */
-socket.on("collectible", (collectable) => (collectible = collectable));
+socket.on("collectible", (collectable) => {
+  collectible = collectable;
+});
 
 /**
  * The player scores
@@ -71,13 +73,22 @@ socket.on("score", (value) => {
 });
 
 socket.on("opponents_join", (players) => {
+  // On every refresh, refresh the opponents array
+  opponents = []
+
   players.forEach((opponent) => {
     opponent.avatar = OPP_AVATAR_URL
     opponents.push(opponent)
   })  
 });
 
+/**
+ * This get's run to much
+ */
 socket.on("opponent_broadcast", (player) => {
+  // On every refresh, refresh the opponents array
+  opponents = []
+
   player.avatar = OPP_AVATAR_URL
   opponents.push(player)
 })
@@ -98,9 +109,6 @@ socket.on("opponent_update", ({ id, x, y, score }) => {
 
 socket.on("opponent_leave", (player_id) => {
   const index = opponents.findIndex(o => o.id == player_id)
-  if(index < 0) {
-      return
-  }
   opponents.splice(index, 1)
 })
 
