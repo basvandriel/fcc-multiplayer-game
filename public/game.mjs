@@ -152,19 +152,11 @@ document.addEventListener("keydown", ({ key }) => {
  */
 function render() {
   if(!player) return requestAnimationFrame(render)
-  
-  // To count the total players, count the opponents 
-  // plus the current player
   new BoardDrawer(context, rank).draw();
+  new PlayerDrawer(context, player).draw();
 
   if (collectible) {
     const drawer = new CollectibleDrawer(context, collectible);
-    drawer.draw();
-  }
-
-  // If the player connected, start drawing
-  if (player) {
-    const drawer = new PlayerDrawer(context, player);
     drawer.draw();
   }
 
